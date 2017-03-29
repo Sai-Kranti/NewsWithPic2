@@ -1,6 +1,7 @@
 package com.example.android.newswithpic;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,20 +33,17 @@ public class BlankFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_blank, container, false);
+
         arrayList = new ArrayList<>();
-        lv = (ListView) findViewById(R.id.list);
 
-        runOnUiThread(new Runnable(){
-            @Override
-            public void run(){
+        lv = (ListView) getActivity().findViewById(R.id.list);
+
                 new ReadJSON().execute("http://webhose.io/search?token=9c55cbb1-2f1c-4700-9c1e-67e685152506&format=json&q=Indian%20Startups%20(Startups%20OR%20Entrepreneur)%20language%3A(english)%20thread.country%3AIN");
-            }
-        });
 
+        return inflater.inflate(R.layout.fragment_blank, container, false);
     }
 
-    class ReadJSON extends AsyncTask<String,Integer,String> {
+    class ReadJSON extends AsyncTask<String,Integer,String>{
 
         @Override
         protected String doInBackground(String... params){
@@ -94,13 +92,11 @@ public class BlankFragment extends Fragment {
                 e.printStackTrace();
 
             }
-            CustomListAdapter adapter = new CustomListAdapter(getApplicationContext(),R.layout.list, arrayList);
+
+            CustomListAdapter adapter = new CustomListAdapter(getActivity().getApplicationContext(),R.layout.list, arrayList);
             lv.setAdapter(adapter);
         }
     }
-
-
-
     private static String readURL(String theUrl){
         StringBuilder content = new StringBuilder();
         try {
@@ -118,7 +114,4 @@ public class BlankFragment extends Fragment {
         }
         return content.toString();
     }
-
-
-
 }
